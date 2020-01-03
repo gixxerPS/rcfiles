@@ -1,0 +1,7 @@
+[user]
+	email = d.boenke@gmx.net
+	name = gixxerPS
+[core]
+    editor = vim
+[color]
+    ui = true

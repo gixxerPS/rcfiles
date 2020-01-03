@@ -1,0 +1,880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<head>
+<style type="text/css">
+code {
+    color:#0000FF;
+    background-color: #C0C0C0; 
+    /*font-family:courier;*/
+}
+kbd {
+    color:#0000FF;
+    background-color: #C0C0C0; 
+}
+samp {
+    /*color:#0000FF;*/
+    /*background-color: #C0C0C0; */
+    /*border-color: black;*/
+    /*border-width: 1px;  */
+    /*border-style: solid;*/
+}
+pre {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+thead {
+    font-weight: bolder;
+}
+table, th, td {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+td:first-child {
+    width: 8em;
+}
+#toc {
+   float:left;
+   background-color: skyblue;
+   width: 250px;
+   border-color: black;
+   border-width: 1px;
+   border-style: solid;
+   position: fixed;
+   top: 1em;
+   left: 1em;
+}
+#content {
+   margin-left: 280px;
+}
+.txtfilecontent {
+   /*background-color:yellow;*/
+   font-family:courier;
+   border-color: black;
+   border-width: 1px;
+   border-style: solid;
+}
+</style>
+<title>My notes</title>
+</head>
+
+<body>
+<div id="toc">
+    <h2>table of contents</h2>
+    <ul>
+        <li><a href="#commands">useful commands</a></li>
+        <ul>
+            <li><a href="#commands_folderutils">folder utils</a></li>
+            <li><a href="#commands_manipulation">textfile manipulation</a></li>
+            <li><a href="#commands_netw">network</a></li>
+        </ul>
+        <li><a href="#pkg">pkg and installation</a></li>
+        <li><a href="#servermaint">server maintenance</a></li>
+        <ul>
+            <li><a href="#servermaint_logs">logs</a></li>
+            <li><a href="#servermaint_ssh">ssh</a></li>
+            <li><a href="#servermaint_tmux">tmux</a></li>
+            <li><a href="#servermaint_rsync">rsync</a></li>
+            <li><a href="#servermaint_cron">cron</a></li>
+        </ul>
+        <li><a href="#programs">programs and links</a></li>
+        <li><a href="#mc">midnight commander</a></li>
+        <li><a href="#svn">subversion</a></li>
+        <li><a href="#git">git</a></li>
+        <li><a href="#raspi">raspberry pi 2</a></li>
+        <ul>
+            <li><a href="#archlinux">archlinux</a></li>
+            <li><a href="#raspbian">raspbian</a></li>
+            <li><a href="#redmine">redmine</a></li>
+            <li><a href="#prosody">prosody</a></li>
+        </ul>
+        <li><a href="#beaglebone">beaglebone</a></li>
+        <li><a href="#smb">samba</a></li>
+        <li><a href="#vim">vim</a></li>
+        <li><a href="#mikrocontroller">mikrocontroller</a></li>
+        <ul>
+            <li><a href="#eclipse">setup eclipse</a></li>
+            <li><a href="#arduino">arduino</a></li>
+        </ul>
+    </ul>
+</div>
+
+<div id="content">
+    <h1 id="commands">useful commands</h1>
+    <ul>
+        <li>recursive grep</li>
+        <code>grep -r 'y ticks =' .</code>
+        <li>command for backup this html file</li>
+        <code>scp ~/mynotes.html root@beaglebone:/media/usbhdd/Datensicherung/linux</code>
+        <li>show content of mounted folder</li>
+        <code>ls 
+            /run/user/1000/gvfs/smb-share\:server\=beaglebone\,share\=pladde/</code>
+        <li>convert svg to pdf with inkscape</li>
+        <code>inkscape --export-pdf=mdlFourmo.pdf mdlFourmo.svg</code>
+        <li>externalize with latex manually</li>
+        <code>pdflatex -shell-escape -halt-on-error -interaction=batchmode -jobname "tikz/tmoconvMCmd" "\def\tikzexternalrealjob{main}\input{main}"</code>
+        <li>more complex find</li>
+        <code>find medien/*Sitcoms* medien/Drama -iname "*s01*e01" -not -name "*.nfo" 2&gt;/dev/null</code>
+        <li>find and execute</li>
+        <code>find . -mmin +5 -mmin -10 -exec sh -c cp {} temp' \;</code>
+        <li>tar create zipped file</li>
+        <code>tar -czf archiv.tgz directory/</code>
+        <li>tar xtract zipped file</li>
+        <code>tar -xzf archiv.tgz</code>
+        <li></li>
+        <code></code>
+    </ul>
+    <h2 id="commands_folderutils">folder utils</h2>
+        <ul>
+            <li>show folder size</li>
+            <code>du -h dir | sort -n</code>
+            <li>show folder size with given depth and combined</li>
+            <code>du -ch -d 1 dir</code>
+        </ul>
+    <h2 id="commands_manipulation">textfile manipulation</h2>
+        <ul>
+            <li>comment all lines with c++ style</li>
+            <code>cat code.c | awk '{print "//" $0}'</code>
+            <li>replace tabs with underscores</li>
+            <code>tr '\t' '_' &lt; text.txt</code>
+            <li>replace uppercase with lowercase</li>
+            <code>tr [:upper:] [:lower:]</code>
+        </ul>
+    <h2 id="commands_netw">network</h2>
+    <ul>
+        <li>port scan of 255 adresses with nmap</li>
+        <code>nmap -sP 192.168.0.*</code>
+        <li>scan wlan network</li>
+        <code>sudo iw dev wlan0 scan</code>
+        <li>mount linux filesystem with sshfs</li>
+        <code>sudo apt-get install sshfs</code><br>
+        <code>sshfs pi@192.168.2.50:/media/usbhdd /mnt/srvdata</code><br>
+        <li>wlan signal state</li>
+        <code>cat /proc/net/wireless</code>
+        <li>mount network samba folder</li>
+        <code>gvfs-mount smb://beaglebone/pladde</code>
+    </ul>
+    <hr>
+    <h1 id="servermaint">server maintenance</h1>
+    <h2 id="servermaint_logs">logs</h2>
+    <ul>
+        <li>currently logged in users</li>
+        <code>w</code>
+        <code>who</code>
+        <li>kernel messages with readable timeformat</li>
+        <code>dmesg -T</code>
+        <li>important logfiles under <code>/var/log</code></li>
+        <ul>
+            <li><code>auth.log</code></li>
+            logs system logons<br>
+            brief successful logons: wtmp<br>
+            brief unsuccessful logons: btmp<br>
+            <li><code>syslog</code></li>
+            logs kernel-, hardware- and cron-events
+            <li><code>dpkg.log</code></li>
+            logs manual installations and automatic updates. additional info 
+            in <code>./apt/history.log</code>
+            <li><code>auth.log</code></li>
+        </ul>
+        <li>view logs of systemd service</li>
+        <code>sudo journalctl -u [unitfile]</code><br>
+        For our myhomeCAN:<br>
+        <code>sudo journalctl -u myhomecan</code><br>
+        To follow logs in real time:<br>
+        <code>sudo journalctl -f -u myhomecan</code>
+
+    </ul>
+    <h2 id="servermaint_ssh">ssh</h2>
+    <ul>
+        <li>ssh login without entering password every time</li>
+        <ul>
+            <li>program sshpass</li>
+            <code>w</code>
+            <li>using authentication key</li>
+            <ol>
+                <li>create key on CLIENT</li>
+                <code>ssh-keygen -t rsa</code><br>
+                (or use puttygen and follow the steps in the program)
+                <li>transfer key to server</li>
+                <code>ssh-copy-id -i root@beaglebone</code><br>
+                <code>ssh-copy-id -i root@alarmpi</code><br>
+                <code>ssh-copy-id -i pi@raspberry</code><br>
+                alternatively manually add the key on the server (this is also 
+                the way for putty)
+                <li>ssh login at server and select 'unlock key automatically'</li>
+            </ol>
+        </ul>
+    </ul>
+    <h2 id="servermaint_tmux">tmux</h2>
+    a terminal multiplexer like screen.
+    <ul>
+        <li>open new shell</li>
+        <code>tmux</code>
+        <li>rejoin shell</li>
+        <code>tmux attach</code>
+        <li>show all sessions (navigation with cursors, enter)</li>
+        ^B S
+        <li>open new window</li>
+        ^B C
+        <li>show window list</li>
+        ^B W
+    </ul>
+    <h2 id="servermaint_rsync">rsync</h2>
+    <ul>
+        <li>syntax: rsync SRC [USER@]HOST:DEST</li>
+        use option -n for a dry test run!<br>
+        <code>rsync -nhva --stats /media/usbhdd/ beagle@192.168.2.51:/media/usbhdd/</code><br>
+        <code>rsync -nva --stats /media/usbhdd/ root@alarmpi:/media/usbhdd/</code><br>
+        <code>rsync -va --stats /media/usbhdd/ root@alarmpi:/media/usbhdd/</code><br>
+        <code>rsync -va --stats /media/usbhdd/ebooks root@192.168.2.101:/media/usbhdd/</code>
+        option --delete for deletion at destination (for exact synchronization)<br>
+        <code>rsync -nva --delete --stats /media/usbhdd/ root@alarmpi:/media/usbhdd</code><br>
+        <code>rsync -nva --delete --stats /media/usbhdd/ pi@raspberry:/media/usbhdd</code><br>
+        <code>rsync -va --delete --stats /media/usbhdd/ root@alarmpi:/media/usbhdd</code><br>
+        skript that can be used for daily cron (<em>/usr/local/bin/usbhddbackup.sh</em>):<br>
+        <pre>
+#!/bin/bash 
+ 
+rsync -nhva --stats --exclude=mysql /media/usbhdd/  beagle@192.168.2.51:/media/usbhdd/ &amp;&gt; $0.log
+
+# test success
+#touch ~/test &amp;&gt; $0.log
+
+# test error
+#touch /root &amp;&gt; $0.log
+ 
+if [ $? -ne 0 ]; then 
+  #error 
+  #echo "Backup of $(hostname) completed with error on $(date)." | 
+  mail -s "$(date +'%y-%m-%d %H:%M:%S') Backup of $(hostname) ERROR" -r srv-boenke@gmx.de boenkedaniel@gmail.com &lt; $0.log
+else 
+  #success 
+  #echo "Backup of $(hostname) completed successfully on $(date)." | mail -s "Backup of $(hostname) SUCCESS" -r srv-boenke@gmx.de boenkedaniel@gmail.com 
+  mail -s "$(date +'%y-%m-%d %H:%M:%S') Backup of $(hostname) SUCCESS" -r srv-boenke@gmx.de boenkedaniel@gmail.com &lt; $0.log
+fi
+        </pre>
+
+    </ul>
+    <h2 id="servermaint_cron">cron</h2>
+    <ul>
+        <li>syntax: rsync SRC [USER@]HOST:DEST</li>
+        <code>rsync -a --stats /media/usbhdd/ root@alarmpi:/media/usbhdd/</code><br>
+        entry in crontab (call user crontab with)<br>
+        <code>crontab -e</code><br>
+        <pre>
+0 0 * * * * /usr/local/bin/usbhddbackup.sh
+</pre>
+    </ul>
+    <hr>
+    <h1 id="pkg">pkg and installation</h1>
+    <ul>
+        <li>is pkg xyz installed?</li>
+        <code>dpkg -l | grep xyz</code>
+        <li> search pkg xyz in online repository</li>
+        <code>apt-cache search xyz</code>
+        <li> show details for pkg xyz</li>
+        <code>apt-cache show xyz</code>
+        <li>install pkg from source code. typical commands</li>
+        <code>./configure</code><br>
+        <code>make</code><br>
+        <code>sudo make install</code>
+        <li>list installed packages sorted by size</li>
+        <code>dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n</code>
+    </ul>
+    <hr>
+    <h1 id="programs">programs and links</h1>
+    <ul>
+        <li>p2p daten direkt zwischen pc's austauschen</li>
+        nitroshare
+        <li>home cloud mit versionsverwaltung</li>
+        sparkleshare
+        <li>pdf</li>
+        evince
+        <li>linux terminal emulator</li>
+        picocom
+        <li>remote server monitoring</li>
+        nagios, check_mk
+        <li>search in office documents</li>
+        docfetcher (java, so usable for windows as well)
+        <li>pictures</li>
+        eog
+        <li>hdd check</li>
+        smartmontools
+        <ul>
+            <li>print all smart info for device. provide usb driver sat with option 
+            -d (valid for intenso 2,5")</li>
+            <code>smartctl -d sat -a /dev/sda1</code>
+            <li></li>
+        </ul>
+        <li>clean up filenames</li>
+        detox
+        <li>terminal shortcut</li>
+        guake
+        <li>regex 101</li>
+        <a href="https://regex101.com/">https://regex101.com/</a>
+    </ul>
+    <hr>
+    <h1 id="setupecl">setup eclipse for beaglebone c++ development</h1>
+    <ol>
+        <li>install the right compiler</li>
+        sudo apt-get install g++-arm-linux-gnueabi
+        <li>replace std compiler with arm compiler in eclipse</li>
+        project -> properties -> c/c++ build -> settings:
+        - gcc c++ compiler -> command: arm-linux-gnueabi-g++
+        - gcc c   compiler -> command: arm-linux-gnueabi-gcc
+        - gcc c++ linker   -> command: arm-linux-gnueabi-g++
+        - gcc assembler    -> command: arm-linux-gnueabi-as
+
+        <li>set include paths correctly</li>
+        project -> properties -> c/c++ general -> paths and symbols -> includes:
+        - gnu c   -> add: /usr/arm-linux-gnueabi/include
+        - gnu c++ -> add: /usr/arm-linux-gnueabi/include/c++/4.6.3
+
+        <li>set library paths correctly</li>
+        project -> properties -> c/c++ general -> paths and symbols -> library paths:
+        - add: /usr/arm-linux-gnueabi/lib
+    </ol>
+    <hr>
+    <h1 id="mc">midnight commander</h1>
+    <ul>
+        <li>ssh connection setup</li>
+        <ol>
+            <li>on linux client create file /home/[user]/.ssh/config</li>
+            <li>put in following content</li>
+            <code>Host beagle</code><br>
+            <code>Hostname beaglebone</code><br>
+            <code>User root</code><br>
+            <li>in mc: right menu -&gt; Shell link -&gt; 'Enter password' 
+            <li>Done</li>
+            </li>
+        </ol>
+        <li>shortcuts</li>
+        <table>
+            <thead>Common Functions</thead>
+            <tr><td><kbd>Ctrl + r</kbd></td><td>Refresh active panel</td></tr>
+            <tr><td><kbd>Ctrl + \</kbd></td><td>Open directory hotlis</td></tr>
+            <tr><td><kbd>Alt + ?   </kbd> </td><td>Opens search dialog</td></tr>
+            <tr><td><kbd>Ctrl-x a  </kbd> </td><td>Open VFS list. If a ftp session times out, 
+                    you can use this to free the open vfs so you can log in 
+                    again.</td></tr>
+        </table>
+
+        <table>
+            <thead>Panel Functions</thead>
+            <tr><td><kbd>Insert </kbd></td><td> Marks or removes mark on file(s)</td></tr>
+            <tr><td><kbd>Alt + g</kbd></td><td>Marks first file or directory in active panel</td></tr>
+            <tr><td><kbd>Alt + c</kbd></td><td>Quick cd</td></tr>
+            <tr><td><kbd>Alt + r</kbd></td><td>Marks middle file or directory in active panel</td></tr>
+            <tr><td><kbd>Alt + j</kbd></td><td>Marks last file or directory in active panel</td></tr>
+            <tr><td><kbd>Alt + s</kbd></td><td>Incremental search</td></tr>
+            <tr><td><kbd>Ctrl + /</kbd></td><td>   Look for filename given in last line of active panel (not whole screen), and jumps on first file</td></tr>
+            <tr><td><kbd>*   </kbd></td><td>Marks removes marking for all files in active panel (not directories)</td></tr>
+            <tr><td><kbd>+ </kbd></td><td>Brings up the input box where it can be given regular expression. All files with names that fill condition(s) in regular expression will be marked.</td></tr>
+            <tr><td><kbd>\ </kbd></td><td>Remove marking for more data (opposite to + )</td></tr>
+            <tr><td><kbd>Alt+o</kbd></td><td>make passive panel directory equivalent to the active</td></tr>
+        </table>
+        <table>
+            <thead>Shell Functions</thead>
+            <tr><td><kbd>Alt + Enter</kbd></td><td> Copies selected filename in command line</td></tr>
+            <tr><td><kbd>Ctrl + Shft + Enter </kbd></td><td>Copies full path of selected file in the command line</td></tr>
+            <tr><td><kbd>Alt + H</kbd></td><td> Shows command line history</td></tr>
+            <tr><td><kbd>Ctrl + o</kbd></td><td>toggle plain shell and mc (usefull for auto-completion with TAB</td></tr>
+        </table>
+    </ul>
+    <hr>
+    <h1 id="svn">subversion</h1>
+    <ul>
+        <li>angelegte Ordnerstruktur (nur noch 'innerhalb' von svn sichtbar)</li>
+        /media/usbhdd/svn/repos/masmatlab/trunk
+        /media/usbhdd/svn/repos/masmatlab/branches
+        /media/usbhdd/svn/repos/masmatlab/tags
+        <li>trunk enthaelt den ganzen Inhalt</li>
+        <li>svn server starten um Netzwerkzugriff zu ermoeglichen:</li>
+        <code>svnserve -d -r /var/svn</code>
+        -r ermoeglicht relative pfadangabe fuer clienten. bezieht sich dann also z.B. 
+        auf pfade unterhalb von /var/svn. Ansonsten muessen Pfade absolut angegeben 
+        werden.
+        <li>fuer mastermatlab manuell</li>
+        <ol>
+            <li>auf beaglebone</li>
+            <code>svnserve -d -r /media/usbhdd/svn/repos</code>
+            <li>auf ubuntu</li>
+            <code>svn checkout svn://192.168.2.108/masmatlab svnmatlab</code>
+            <code>svn co svn://beaglebone/maslatex/trunk restoredsvnlatex</code>
+            <li>Dateien bearbeiten</li>
+            <li>Status anschauen (gibt es neue/modifizierte/geloeschte... Dateien?)</li>
+            <code>svn status /home/ubuntu/mastermatlab/svnmatlab/</code>
+            <code>svn status /home/ubuntu/masterlatex/</code>
+            <li>Aenderungen anschauen</li>
+            <code>svn diff /home/ubuntu/mastermatlab/svnmatlab/</code>
+            <code>svn diff /home/ubuntu/masterlatex/</code>
+            <li>svn status with only relevant infos for matlab</li>
+            <code>svn status /home/ubuntu/mastermatlab/svnmatlab/ | grep -v mexw32 | grep -v mexw64 | grep -v slprj | grep -v .original | grep -v .autosave | grep -v /output/ | grep -v .r2013a | grep -v .r2013b</code>
+            <li>svn status with only relevant infos for latex</li>
+            <code>svn status /home/ubuntu/masterlatex/ | 
+                grep -v 'tikz/'</code>
+            <li>svn rm with regular expression</li>
+            <code>ls | grep ^A | xargs svn rm</code>
+            <li>Aenderungen auf Server uebertragen</li>
+            <code>svn commit -m "comment" /home/ubuntu/mastermatlab/svnmatlab/</code>
+            <code>svn commit -m "comment" /home/ubuntu/masterlatex/</code>
+            1.passwort = ubuntu passwort
+            [users]
+            svndaniel = masterofdesaster
+            <li>Aenderungen vom server in lokale Kopie uebertragen</li>
+            <code>svn update /home/ubuntu/mastermatlab/svnmatlab/</code>
+        </ol>
+        <li>ip adress of server has changed</li>
+        both revisions (maslatex and masmatlab) are now pointing to the name 
+        'beaglebone' instead of an ip adress 192.168.2.xxx! 
+        'beaglebone' is resolved in <code>/etc/hosts</code>. So just change 
+        <code>/etc/hosts</code>. An <code>svn switch --relocate</code> shouldn't 
+        be necessary anymore.<br>
+        <code>svn switch --relocate svn://192.168.2.108/masmatlab 
+            svn://beaglebone/masmatlab</code><br>
+        <code>svn switch --relocate svn://192.168.2.108/maslatex 
+            svn://beaglebone/maslatex</code>
+        <li>
+        Transmitting file data .....svn: E155011: Commit failed (details follow):
+        svn: E155011: File '/home/ubuntu/masterlatex/thesis/main.pdf' is out of date
+        svn: E160028: While preparing '/home/ubuntu/masterlatex/thesis/main.pdf' for commit
+        svn: E160028: Directory '/maslatex/trunk/thesis/Bilder' is out of date
+        </li>
+        <li>recover revisions 0:49 using dump and load</li>
+        <code>svnadmin create newrepo</code><br>
+        <code>svnadmin dump -r 0:49 repo | svnadmin load newrepo</code><br>
+        <code>mv repo oldrepo</code><br>
+        <code>mv newrepo repo</code>
+    </ul>
+    <hr>
+    <h1 id="git">git</h1>
+    <ul>
+        <li>commit changes (locally to master) and push then to remote</li>
+	<pre>
+git commit -am '- new readme'
+git push</pre>
+        <li>setup</li>
+        <kbd>git config --global user.name "Daniel Boenke"</kbd><br>
+        <kbd>git config --global user.email boenkedaniel@gmail.com</kbd><br>
+        <kbd>git config --global core.editor vim</kbd><br>
+        <kbd>git config --list</kbd><br>
+        <li>server config</li>
+        <kbd>adduser git</kbd><br>
+        password: git
+        repository:
+        <kbd>git@beaglebone:/media/usbhdd/git/homeautomation_sw</kbd><br>
+        <kbd>git remote add origin git@beaglebone:/media/usbhdd/git/homeautomation_sw</kbd>
+        <li>working with git</li>
+        <kbd>git clone git@beaglebone:/media/usbhdd/git/homeautomation_sw</kbd><br>
+        <kbd>git status</kbd><br>
+        <kbd>git pull</kbd> (update from server)<br>
+        <kbd>git reset --hard</kbd> or <kbd>git checkout -t -f remote/branch</kbd>(discard local changes)<br>
+        <kbd>git checkout filename</kbd> (discard local changes for a specific file)<br>
+    </ul>
+    <hr>
+    <h1 id="raspi">raspberry pi 2</h1>
+    <ul>
+        <li>my model</li>
+        Raspberry Pi 2 Model B V1.1
+        <li>enable double usb current</li>
+        Add the line<br>
+        <samp>max_usb_current=1</samp><br>
+        to <br>
+        <samp>/boot/config.txt</samp>
+        <li>image backup of running live system</li>
+        <code>dd if=/dev/mmcblk0 bs=1M | gzip -c &gt; /media/usbhdd/Datensicherung/srv-data.img.gz</code>
+        
+    </ul>
+    <h2 id="archlinux">archlinux</h2>
+    <ul>
+        <li>sd card setup</li>
+        <ol>
+            <li>set root user</li>
+            <code>sudo su</code>
+            <li>further steps</li>
+            using the steps from
+            <a href=
+                "http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2">
+                http://archlinuxarm.org/platforms/armv7/broadcom/raspberry-pi-2</a>
+            <ol>
+                Replace sdX in the following instructions with the device name for the SD card as it appears on your computer.
+
+                <li>Start fdisk to partition the SD card</li>
+                <code>fdisk /dev/sdX</code>
+                <li>At the fdisk prompt, delete old partitions and create a new one</li>
+                Type o. This will clear out any partitions on the drive.<br>
+                Type p to list partitions. There should be no partitions left.<br>
+                Type n, then p for primary, 1 for the first partition on the drive, 
+                codess ENTER to accept the default first sector, then type +100M for 
+                the last sector.<br>
+                Type t, then c to set the first partition to type W95 FAT32 (LBA).<br>
+                Type n, then p for primary, 2 for the second partition on the drive, 
+                and then codess ENTER twice to accept the default first and last 
+                sector.<br>
+                Write the partition table and exit by typing w.<br>
+                I got an error message while re-reading. Just ignore it and reboot.<br>
+                <li>Create and mount the FAT filesystem</li>
+                <code>mkfs.vfat /dev/sdX1</code>
+                <code>mkdir boot</code>
+                <code>mount /dev/sdX1 boot</code>
+                <li>Create and mount the ext4 filesystem</li>
+                <code>mkfs.ext4 /dev/sdX2</code>
+                <code>mkdir root</code>
+                <code>mount /dev/sdX2 root</code>
+                <li>Download and extract the root filesystem (as root, not via sudo)</li>
+                <code>wget http://archlinuxarm.org/os/ArchLinuxARM-rpi-2-latest.tar.gz</code>
+                <code>bsdtar -xpf ArchLinuxARM-rpi-2-latest.tar.gz -C root</code>
+                <code>sync</code>
+                <li>Move boot files to the first partition</li>
+                <code>mv root/boot/* boot</code>
+                <li>Unmount the two partitions</li>
+                <code>umount boot root</code>
+                <li>Insert the SD card into the Raspberry Pi, connect ethernet, and 
+                apply 5V power.</li>
+                <li>Use the serial console or SSH to the IP address given to the 
+                board by your router. The default root password is 'root'.</li>
+            </ol>
+        </ol>
+        <li>network setup</li>
+        <ol>
+            <li>using netctl</li>
+            <code>cd /etc/netctl</code><br>
+            <code>cp examples/ethernet-dhcp my_dhcp_setup</code><br>
+            <code>netctl enable my_dhcp_setup</code><br>
+        </ol>
+        <li>change root password</li>
+        <code>passwd</code>
+        <li>set timezone</li>
+        <code>ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime</code>
+        <li>packetmanager pacman</li>
+        <ul>
+            <li>Upgrading packages (This command can synchronize the repository 
+            databases and update the system's packages)</li>
+            <code>pacman -Syu</code>
+            <li>Installing specific packages</li>
+            <code>pacman -S package_name1 package_name2 ...</code>
+        </ul>
+        <li>use full range of sd card</li>
+	simple way: use
+	<code>sudo raspi-config</code>
+	or:
+        <ol>
+            <li>delete partition 2</li>
+            <code>fdisk /dev/mmcblk0</code><br>
+            <code>d</code><br>
+            <code>2</code>
+            <li>create new extended partition</li>
+            <code>n</code><br>
+            <code>e</code><br>
+            <code>2</code><br>
+            First sector = default<br>
+            Last sector = default
+            <li>create new logical partition</li>
+            <code>n</code><br>
+            <code>l</code><br>
+            First sector = default<br>
+            Last sector = default<br>
+            <li>finish setup</li>
+            <code>w</code><br>
+            <code>shutdown -r now</code>
+            <li>enlarge unmounted file system</li>
+            <code>resize2fs /dev/mmcblk0p5</code>
+        </ol>
+        <li>mount usbhdd manually</li>
+        <code>mount -t vfat /dev/sda1 /media/usbhdd</code>
+    </ul>
+    <h2 id="raspbian">raspbian</h2>
+    <ul>
+        <li>defaultpassword</li>
+        raspberry
+        <li>change hostname</li>
+        Update <samp>/etc/hostname</samp><br>
+        Update <samp>/etc/hosts</samp>, so local address(es) resolves with the 
+        new system name.
+	To enable SSH for headless machines:
+
+    For headless setup, SSH can be enabled by placing a file named ssh, without any extension, onto the boot partition of the SD card.<br>
+
+        Default user = pi; Default password = raspberry. Network setup static ip (default = dhcp) in /etc/network/interfaces:
+	<pre>
+	iface eth0 inet static
+	address 192.168.2.50
+	gateway 192.168.2.1
+	</pre>
+        <li>wifi</li>
+	check via <code>ifconfig</code> that wlan0 was added and adapter has been detected correctly.
+	add the following to /etc/wpa_supplicant/wpa_supplicant.conf:
+	<pre>
+	network={
+	    ssid="CBR600f"
+	    scan_ssid=1
+	    psk="8945449144515715"
+	}
+	</pre>
+	At this point, wpa-supplicant will normally notice a change has occurred within a few seconds, and it will try and connect to the network. If it does not, restart the interface with sudo wpa_cli reconfigure.
+
+	You can verify if it has successfully connected using ifconfig wlan0. If the  inet addr field has an address beside it, the Pi has connected to the network. If not, check your password and ESSID are correct.
+	DAS FUNKTIONIERT AM BESTEN:
+	direct via /etc/network/interfaces:
+	<pre>
+	iface wlan0 inet static
+		address 192.168.2.52
+		netmask 255.255.255.0
+		gateway 192.168.2.1
+		wpa-essid CBR600F
+		wpa-psk 8945449144515715
+	#iface wlan0 inet manual
+	#    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+	</pre>
+        <li>ssh headless</li>
+        For headless setup, SSH can be enabled by placing a file named ssh, without any extension, onto the boot partition of the SD card
+        <li>mail setup</li>
+        <code>sudo apt-get install ssmtp<br>
+        sudo apt-get install mailutils</code><br>
+        Datei <em>/etc/ssmtp/ssmtp.conf</em>:
+        <pre>
+        root=postmaster
+
+# The place where the mail goes. The actual machine name is required no
+# MX records are consulted. Commonly mailhosts are named mail.domain.com
+mailhub=mail.gmx.net:587
+
+# Where will the mail seem to come from?
+#rewriteDomain=gmx.de
+
+# The full hostname
+hostname=gmx.de
+
+# Are users allowed to set their own From: address?
+# YES - Allow the user to specify their own From: address
+# NO - Use the system generated From: address
+FromLineOverride=YES
+AuthUser=srv-boenke@gmx.de
+AuthPass=A6yxQYIsAiIyeSVl3CmV
+UseSTARTTLS=YES
+</pre>
+         Test:<br>
+         <code>echo "Hello world email body" | mail -s "Test Subject" -r srv-boenke@gmx.de boenkedaniel@gmail.com</code><br>
+         Wichtig ist das -r srv-boenke@gmx.de ohne kommt:<br>
+         <samp>
+         send-mail: 550 Sender address is not allowed.
+         </samp>
+    </ul>
+    <hr>
+    <h2 id="redmine">redmine</h2>
+    <ul>
+        <li>installation path</li>
+        <samp>/usr/share/redmine-3.1.1</samp>
+        <li>user and passwort for mysql database</li>
+        redmine 'redmine'
+        <li>setup as described on <a href="http://www.redmine.org/projects/redmine/wiki/RedmineInstall">http://www.redmine.org/projects/redmine/wiki/RedmineInstall</a></li>
+        <li>start redmine with</li>
+        <code>sudo service apache2 stop; cd /usr/share/redmine-3.1.1 ; bundle exec rails server webrick -b 192.168.2.104 -e production</code>
+    </ul>
+    <hr>
+    <h2 id="prosody">prosody</h2>
+    <ul>
+        <li>list available users</li>
+        <code>sudo ls /var/lib/prosody/horstm%2dboxmaker%2ede/accounts</code>
+    </ul>
+    <hr>
+    <h1 id="beaglebone">beaglebone</h1>
+    <ul>
+        <li>image install and flashing</li>
+        for server use a nice and small image is<br>
+        <code>wget https://rcn-ee.com/rootfs/bb.org/release/2015-03-01/console/bone-debian-7.8-console-armhf-2015-03-01-2gb.img.xz</code><br>
+        the .img.xz is only 50 mb because it contains only the most important 
+        packages. <br>
+        unpack .img.xz:<br>
+        <code>
+        unxz /media/sf_D_DRIVE/tmp/bone-debian-9.4-lxqt-armhf-2018-06-17-4gb.img.xz 
+        </code><br>
+        ACHTUNG. wenn root login mit leerem passwort nicht geht dann <i>debian</i> mit <i>temppwd</i> probieren!<br>
+        steps for installation
+        <ol>
+            <li>setup microSD card with image write and above mentioned image</li>
+            <li>plug microSD into powered off beaglebone, hold down boot button</li>
+            <li>the image is not supposed to flash eMMC automatically, so you can
+            ssh instantly to the beaglebone
+            <li>in file /boot/uEnv.txt go to section<br>
+            <code>##enable BBB: eMMC Flasher:</code>
+            and uncomment the line<br>
+            <code>#cmdline=init=/opt/scripts/tools/eMMC/init-eMMC-flasher-v3.sh</code>
+            <li>reboot, the eMMC will be flashed on next startup. it shuts down 
+            if flashing is complete</li>
+            <li>remove microSD and startup normally</li>
+        </ol>
+        <li>kernel upgrade</li>
+        <code>sudo apt-cache search linux-image | grep 4.0 | grep bone</code><br>
+        <code>sudo apt-get install linux-image-4.0.XX-boneX</code>
+        <li>solve problems with date</li>
+        setting <span><samp>/etc/localtime</samp></span> and installing ntp helped for me
+        <li>solve problems with locale</li>
+        disable option <samp>SendEnv LANG LC_*</samp> in
+        <samp>/etc/ssh/ssh_config</samp>
+        <li>set up static ip adress</li>
+	<samp>/etc/network/interfaces</samp>
+	<pre>
+	iface wlan0 inet static
+		address 192.168.2.52
+		netmask 255.255.255.0
+		gateway 192.168.2.1
+		wpa-essid CBR600F
+		wpa-psk 8945449144515715
+	#iface wlan0 inet manual
+	#    wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+
+	</pre>
+        wenn das nicht uebernommen wird, dann pruefen ob ein Netzwerk-Management-Tool wie z.B. connman aktiv ist.
+        Statische IP addresse mit connman:
+        List all connections:<br>
+        <code>connmanctl services</code><br>
+        Set the IP address.<br>
+        <code>sudo connmanctl config ethernet_9059af4e1112_cable --ipv4 manual 192.168.2.51 255.255.255.0 192.168.2.1</code>
+	<li>add non root user beagle</li>
+  	<code>adduser beagle</code><br>
+	<code>adduser beagle sudo</code><br>
+	Root login verbieten:
+	<samp>/etc/ssh/sshd_config</samp>
+	<pre>
+	PermitRootLogin no
+	</pre>
+    </ul>
+    <hr>
+    <h1 id="smb">samba</h1>
+    <ul>
+        <li>create samba user</li>
+        <code></code>
+        <li>configure</li>
+        notes from smb.conf:<br>
+        <pre class="txtfilecontent"># NOTE: Whenever you modify this file you should run the command
+# "testparm" to check that you have not made any basic syntactic
+# errors.
+# A well-established practice is to name the original file
+# "smb.conf.master" and create the "real" config file with
+# testparm -s smb.conf.master &gt;smb.conf
+# This minimizes the size of the really used smb.conf file</pre>
+        <ol>
+            <li>create master copy</li>
+            <code>cd /etc/samba</code><br>
+            <code>cp smb.conf smb.conf.master</code>
+            <li>add following at the end of smb.conf.master to share the usb hdd</li>
+            <pre class="txtfilecontent">
+# i added this part for sharing the usbhdd
+[pladde]
+comment = usb festplatte
+path = /media/usbhdd
+read only = no</pre>
+            <li>create smb.conf using testparm</li>
+            <code>testparm -s smb.conf.master &gt;smb.conf</code>
+            <li>add user root to samba (maybe later create extra user). The user must be an existing linux user.</li>
+            <code>smbpasswd -a root</code>
+            <li>check setup</li>
+            <kbd>smbclient -L localhost -U%</kbd><br>
+            <pre>
+<samp>root@beaglebone:/etc/samba#  smbclient -L localhost -U% 
+    Domain=[WORKGROUP] OS=[Unix] Server=[Samba 3.6.6]
+
+    Sharename       Type      Comment
+    ---------       ----      -------
+    print$          Disk      Printer Drivers
+    pladde          Disk      usb festplatte
+    IPC$            IPC       IPC Service (beaglebone server)
+    Domain=[WORKGROUP] OS=[Unix] Server=[Samba 3.6.6]
+    Server               Comment
+    ---------            -------
+    BEAGLEBONE           beaglebone server
+    Workgroup            Master
+    ---------            -------
+    WORKGROUP            BEAGLEBONE</samp>
+            </pre>
+        </ol>
+        <li>test on windows client</li>
+        in windows explorer: \\BEAGLEBONE (=\\&lt;servername&gt;)<br>
+        user = root<br>
+        passwd = &lt;smb-passwd&gt;
+	<li>mount smb folder temporary in linux</li>
+		<code>sudo mount -t cifs -o username=pi //192.168.2.50/pladde /media/smbpi</code>
+	<li>mount permanent via fstab</li>
+		<pre>//192.168.1.100/Tausch /media/austausch cifs username=otto,passwd=geheim,domain=Gruppe1 0 0</pre>
+    </ul>
+    <hr>
+    <h1 id="vim">vim</h1>
+    <ul>
+        <li>line, column, word status</li>
+        <code>g, ^g</code>
+        <li>reindent entire file in vim</li>
+        <code>gg=G</code>
+        <li>escape characters in vim. search for '\word'</li>
+        <code>/\\word</code>
+        <li>escape characters in vim. search for 'begin{figure}[t]' and replace 
+        with 'begin{figure}[!t]'</li>
+        <code>:%s/begin{figure}\[t\]/begin{figure}\[!t\]/c</code>
+    </ul>
+    <hr>
+    <h1 id="mikrocontroller">mikrocontroller</h1>
+    <h2 id="eclipse">setup eclipse</h2>
+    <ul>
+        it is important to use firmware 2.x on jtagice3
+        <li>needed tools</li>
+        <ol>
+            <li>avrdude</li>
+            ...
+        </ol>
+        <li>nice tools</li>
+            <ol>
+                <li>C/C++ GDB Hardware Debugging</li>
+                <li>AVR Eclipse Plugin</li>
+                <li>Eclipse Git Team Provider</li>
+                <li>eclox</li>
+            <a href=
+                http://mcuoneclipse.com/2012/06/25/5-best-eclipse-plugins-1-eclox-with-doxygen-graphviz-and-mscgen/>http://mcuoneclipse.com/2012/06/25/5-best-eclipse-plugins-1-eclox-with-doxygen-graphviz-and-mscgen/</a>
+                <li>Changelog Management Tools</li>
+            </ol>
+
+        <li>links</li>
+            <a href=
+                "https://www.mikrocontroller.net/articles/AVR_Eclipse#Ubuntu_8.10_.28Zum_ersten.29">
+                https://www.mikrocontroller.net/articles/AVR_Eclipse#Ubuntu_8.10_.28Zum_ersten.29</a>
+            <br>
+            <a href=
+                "https://www.mikrocontroller.net/topic/301030">
+                https://www.mikrocontroller.net/topic/301030</a>
+            <br>
+            <a href=
+                "https://www.mikrocontroller.net/articles/AVRDUDE">
+                https://www.mikrocontroller.net/articles/AVRDUDE</a>
+    </ul>
+    <li>ide independent generation</li>
+    <ul>
+        <li>create makefile</li>
+        using <kbd>/usr/local/bin/mfile</kbd> from joerg wunsch to create a 
+        makefile from scratch
+    </ul>
+    <li>check hardware connection reading flash from device</li>
+    <code>avrdude -pm32 -cjtag3 -Pusb -Uflash:r:flash.hex:i</code>
+    <li>test avarice reading fuses</li>
+        <code>sudo avarice -3 --jtag usb -P atmega2560 -r</code>
+    <li>debugging</li>
+        <code>avarice -3 --jtag usb -P atmega2560  :4242//</code>
+    <li>programming</li>
+        <code>avrdude -pm2560 -cjtag3 -Pusb -Uflash:w:/home/mint/workspace/stk600test/Debug/stk600test.elf:a</code>
+    <li>programming fuses</li>
+    <code>AVRDUDE -patmega32  -cjtag3 -Pusb -U lfuse:w:0xEF:m</code><br>
+    <li>only verify program</li>
+    <code>avrdude -pm32 -cjtag3 -Pusb -Uflash:v:main.hex:i</code><br>
+        <a href="http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega32&LOW=EF&HIGH=99&LOCKBIT=FF">http://eleccelerator.com/fusecalc/fusecalc.php?chip=atmega32&LOW=EF&HIGH=99&LOCKBIT=FF</a>
+    <h2 id="arduino">arduino</h2>
+    <li>reading / programming arduino mega2560 with avrdude</li>
+    <code>sudo avrdude -pm2560 -cstk500v2 -P/dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_85235353137351908111-if00 -Uflash:r:flash.hex:i</code><br>
+    <li>listening to serial port of arduino</li>
+    <code>sudo picocom /dev/serial/by-id/usb-Arduino__www.arduino.cc__0042_85235353137351908111-if00</code><br>
+    <li>close picocom</li>
+    <code>C-a C-x</code><br>
+
+
+</div>
+</body>
