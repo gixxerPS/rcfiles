@@ -61,6 +61,8 @@ Plug 'janko-m/vim-test'
 Plug 'pangloss/vim-javascript'
 Plug 'maksimr/vim-jsbeautify'
 Plug 'vim-syntastic/syntastic'
+" outline
+Plug 'liuchengxu/vista.vim' 
 
 " Markdown / Writting
 Plug 'tpope/vim-markdown'
